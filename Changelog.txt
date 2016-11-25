@@ -18,3 +18,4 @@
 		(Probablement pas corrigeable avec la biblio graphique, à voir).
 
 26 nov 	      : Création du mode 1 joueur, création de l'IA (à optimisée car peut être bloquée dans de rares siutations).
+		IA doit fonctionner sans qu'on ai besoin de cliquer, ce qui n'est pas le cas pour le moment.
