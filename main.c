@@ -431,7 +431,7 @@ int main(void){
 				}
 
 
-			if (game_over_joueur1 == 0 && phase_de_jeu == PHASE_DEP_JOUEUR2){ /*On débloque le succès suicide*/
+			if (game_over_joueur1 == 0 && phase_de_jeu == PHASE_DEP_JOUEUR2 && game_over_joueur2 != 0){ /*On débloque le succès suicide*/
 					debloquer_succes(1, achiv_unlocked);
 					printf("Succes suicide");
 			}
