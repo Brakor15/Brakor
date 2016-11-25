@@ -1,0 +1,19 @@
+21 nov 	00:06 : Ajout de l'affichage graphique en bas du tableau du nom du tour actuel. (Ex : JOUEUR 1 DOIT COCHER)
+	00:27 : Ajout de l'écran de fin de jeu provisoire, et des numéros sur les pions pour mieux les différencier.
+
+22 nov     21:42 : Ajout de l’affichage graphique pour la sélection de la taille de la grille de jeu.
+                  : Création du Makefile, initialisation de bugs au changement de fenêtre.
+
+23 nov	00:28 : Correction des bugs du menu. Ajustement de la taille de la fenetre, ajout du système de succès. Les succès
+		accomplis sont enregistrés dans un fichier pour que leur données soient sauvegardées une fois le jeu éteint.
+		Ajout de l'affichage lorsqu'un succès est débloqué.
+		Ajout du succès numéro 1 (partie code, pas graphique) : suicide.
+		Ajout du menu de succès.
+		Ajout du remise à zéro des succès dans le menu (bug sur le fprintf à cause du vide entre les deux %d, à 		regler).
+
+
+23 nov 	12:14 : Correction des bugs liés aux succès. Ajout du fond et des personnages.
+
+25 nov	23:39 : Correction de tous les bugs de succès, maintenant entierement fonctionnel. Reste un problème d'affichage 			lors de l'obtention d'un succès. Ajout des murs qui changent d'apparence en fonction de leur position. Ajout 			du chargement des ressources graphiques en fonction de la taille du tableau. Ajout de l'attente du clic avant 			de quitter la partie quand Game Over. Il reste un probleme de sintillement du bord du plateau lorsqu'un mur y 			est collé.
+		(Probablement pas corrigeable avec la biblio graphique, à voir).
+
