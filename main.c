@@ -332,7 +332,195 @@ int deplacement_verification(int tab[][9], int* pos_x, int* pos_y, int pos_xx, i
 	return 1;
 }
 
-void partie_un_joueur(int taille_tableau){
+
+void IA_aleatoire(int* joueur2_x, int* joueur2_y, int modulo){
+	*joueur2_x = (rand()%modulo);
+	*joueur2_y = (rand()%modulo);
+}
+
+void IA_deplacement(int* joueur2_x, int* joueur2_y, int tab[][9], int taille_tableau){
+	int pos_x = (*joueur2_x), pos_y = (*joueur2_y), compteur = 0;
+
+		while(compteur != 2){
+			compteur = 0;
+			*joueur2_x = pos_x;
+			*joueur2_y = pos_y;
+			*joueur2_x = *joueur2_x+(rand()%3)-1;
+			*joueur2_y = *joueur2_y+(rand()%3)-1;
+			if (*joueur2_y < taille_tableau && *joueur2_y >= 0 && tab[*joueur2_x][*joueur2_y] == 0)
+				compteur++;
+			if (*joueur2_x < taille_tableau && *joueur2_x >= 0 && tab[*joueur2_x][*joueur2_y] == 0)
+				compteur++;
+		}
+		printf("tabxy %d %d %d\n",tab[*joueur2_x][*joueur2_y], *joueur2_x, *joueur2_y);
+
+	tab[pos_x][pos_y] = 0;
+	tab[*joueur2_x][*joueur2_y] = 8;
+}
+void IA_cocher_case(int joueur1_x, int joueur1_y, int game_over_joueur1, int tab[][9], int taille_tableau){
+	int pos_x = joueur1_x, pos_y = joueur1_y, compteur = 0;
+	if(game_over_joueur1 != 0){
+		while(compteur != 2){
+			compteur = 0;
+			joueur1_x = pos_x;
+			joueur1_y = pos_y;
+			joueur1_x = joueur1_x+(rand()%3)-1;
+			joueur1_y = joueur1_y+(rand()%3)-1;
+			if (joueur1_y < taille_tableau && joueur1_y >= 0 && tab[joueur1_x][joueur1_y] == 0)
+				compteur++;
+			if (joueur1_x < taille_tableau && joueur1_x >= 0 && tab[joueur1_x][joueur1_y] == 0)
+				compteur++;
+		}
+		printf("1x 1y %d %d \n", joueur1_x, joueur1_y);
+		tab[joueur1_x][joueur1_y] = 1;
+		return;
+	}
+	/*while(tab[joueur1_x][joueur1_y] != 0){
+		IA_aleatoire(&joueur1_x, &joueur1_y, taille_tableau);
+	}
+	tab[joueur1_x][joueur1_y] = 1;
+	return;*/
+}
+
+void partie_deux_joueurs(int taille_tableau){
+	srand(time(NULL));
+	int cross, test, tab[MAX][MAX], i, z, taille_case, clic_x, clic_y, test_deplacement, game_over_joueur1 = 1, game_over_joueur2 = 1;
+	int tour_de_jeu = 1, phase_de_jeu = PLACEMENT_JOUEUR_UN, joueur1_x = JOUEUR_PAS_ENCORE_PLACE, joueur1_y = JOUEUR_PAS_ENCORE_PLACE, joueur2_x = JOUEUR_PAS_ENCORE_PLACE, joueur2_y = JOUEUR_PAS_ENCORE_PLACE;
+	int pause = 0, sprite_fond_achiv, sprite_achiv_1, achiv_unlocked[3] = {0};
+	int sp_mur_normal, sp_bord_gauche, sp_bord_droit, sp_bord_haut, sp_bord_bas; /*Sprites */
+
+	initialisation_jeu(tab, &taille_case, taille_tableau, &sp_mur_normal, &sp_bord_gauche, &sp_bord_droit, &sp_bord_haut, &sp_bord_bas); /*On initialise le tableau en fonction de la taille_tableau choisit par l'utilisateur lors du menu */
+	sprite_fond_achiv = ChargerSprite("fond_achiv3.png");
+	sprite_achiv_1 = ChargerSprite("images/achiv_1.png");
+	print_board(tab, taille_tableau); /*Affichage en console pour debeugage*/
+	g_affichage_plateau(tab, taille_case, taille_tableau, phase_de_jeu, sp_mur_normal, sp_bord_gauche, sp_bord_droit, sp_bord_haut, sp_bord_bas); /*On affiche le tableau en fonction de ce qu'il y a dans le tableau */
+	printf("%d", taille_case);
+	while(1){
+		/* Affiche un carré d'une case pour chaque "0" dans le tableau, et devra afficher une croix pour chaque "1" dans le tableau */
+		if (SourisCliquee()){
+			SourisPosition();
+			case_cliquee(taille_case, _X, _Y, &clic_x, &clic_y); /*On stocke la valeurs des cases cliquees en X et en Y dans les variables clic_x et clic_y*/
+			test = verification_case(tab, clic_x, clic_y); /*On verifie si la case n'est pas deja à "1" */
+
+			if (phase_de_jeu != PLACEMENT_JOUEUR_DEUX){
+				game_over_joueur1 = dep_nb_case_possibles(tab, taille_tableau, &joueur1_x, &joueur1_y);
+				printf("nb_cases_dispo_apres_fn1 %d\n", game_over_joueur1);
+				game_over_joueur2 = dep_nb_case_possibles(tab, taille_tableau, &joueur2_x, &joueur2_y);
+				printf("nb_cases_dispo_apres_fn2 %d\n", game_over_joueur2);
+			}
+
+			switch(phase_de_jeu){
+
+				case PLACEMENT_JOUEUR_UN: /* Si elle était vide, on la remplis par une croix, un "1"*/
+					printf("Placement du joueur 1\n");
+					tab[clic_x][clic_y] = 4;
+					joueur1_x = clic_x;
+					joueur1_y = clic_y;
+					phase_de_jeu = PLACEMENT_JOUEUR_DEUX;
+					break;
+
+				case PLACEMENT_JOUEUR_DEUX:
+						printf("Placement du joueur 2\n");
+						IA_aleatoire(&joueur2_x, &joueur2_y, taille_tableau);
+						while(verification_case(tab, joueur2_x, joueur2_y) != 0){
+							IA_aleatoire(&joueur2_x, &joueur2_y, taille_tableau);
+					  }
+						tab[joueur2_x][joueur2_y] = 8;
+						phase_de_jeu = PHASE_DEP_JOUEUR1;
+					break;
+
+				/*Partie où les joueurs déplacent leur pions */
+				case PHASE_DEP_JOUEUR1:
+					if (test == 0){ /* Si la case cliquee libre et phase dep joueur, on deplace le joueur en fonction du tour*/
+						test_deplacement = deplacement_verification(tab, &joueur1_x, &joueur1_y, clic_x, clic_y);
+						if (test_deplacement == DEPLACEMENT_POSSIBLE){
+							deplacement_joueur(tab, &joueur1_x, &joueur1_y, clic_x, clic_y);
+							phase_de_jeu = PHASE_COCHER_CASE1;
+							test_deplacement = FIN_DEPLACEMENT;
+						}
+					}
+					break;
+
+				case PHASE_DEP_JOUEUR2:
+					IA_deplacement(&joueur2_x, &joueur2_y, tab, taille_tableau);
+					phase_de_jeu = PHASE_COCHER_CASE2;
+					break;
+
+				/*Partie où les joueurs cochent des cases */
+				case PHASE_COCHER_CASE1:
+					if (test == 0){
+						tab[clic_x][clic_y] = 1;
+						phase_de_jeu = PHASE_DEP_JOUEUR2;
+					}
+					break;
+				case PHASE_COCHER_CASE2:
+					IA_cocher_case(joueur1_x, joueur1_y, game_over_joueur1, tab, taille_tableau);
+					phase_de_jeu = PHASE_DEP_JOUEUR1;
+					break;
+
+					break;
+				}
+
+
+			g_affichage_plateau(tab, taille_case, taille_tableau, phase_de_jeu,
+					 sp_mur_normal, sp_bord_gauche, sp_bord_droit, sp_bord_haut, sp_bord_bas); /*On affiche le tableau en fonction de ce qu'il y a dans le tableau */
+			printf("Tour du joueur %d, Phase de jeu = %d \n", tour_de_jeu, phase_de_jeu);
+			print_board(tab, taille_tableau);/*Affichage console pour débeugage*/
+
+			if (phase_de_jeu != PLACEMENT_JOUEUR_DEUX){
+				game_over_joueur1 = dep_nb_case_possibles(tab, taille_tableau, &joueur1_x, &joueur1_y);
+				printf("nb_cases_dispo_apres_fn1 %d\n", game_over_joueur1);
+				game_over_joueur2 = dep_nb_case_possibles(tab, taille_tableau, &joueur2_x, &joueur2_y);
+				printf("nb_cases_dispo_apres_fn2 %d\n", game_over_joueur2);
+				}
+
+
+			if (game_over_joueur1 == 0 && phase_de_jeu == PHASE_DEP_JOUEUR2 && game_over_joueur2 != 0){ /*On débloque le succès suicide*/
+					debloquer_succes(1, achiv_unlocked);
+					printf("Succes suicide");
+			}
+			if(game_over_joueur1 == 0 && phase_de_jeu == PHASE_DEP_JOUEUR1){
+				printf("%d\n", phase_de_jeu);
+				printf("GAME OVER JOUEUR 1\n");
+				return;
+			}
+
+			else if(game_over_joueur2 == 0 && phase_de_jeu == PHASE_DEP_JOUEUR2){
+				debloquer_succes(2, achiv_unlocked);
+				printf("GAME OVER JOUEUR 2\n");
+				return;
+			}
+
+		}
+
+		if (ToucheEnAttente()){
+			if(Touche() == XK_Escape){ /*Si on appuis sur Echap pendant le prog, ca quitte*/
+				FermerGraphique();
+				return;
+      }
+		else{
+			printf("Achivement_ouvert\n");
+
+				g_affichage_achivment(sprite_fond_achiv, achiv_unlocked);
+				while(1){
+					if(Touche()){
+						ChargerImage("images/fond.png",0,0,0,0,800,800);
+						g_affichage_plateau(tab, taille_case, taille_tableau, phase_de_jeu, sp_mur_normal, sp_bord_gauche, sp_bord_droit, sp_bord_haut, sp_bord_bas); /*On affiche le tableau en fonction de ce qu'il y a dans le tableau */
+							break;
+						}
+				}
+				printf("Achivement_fermé\n");
+
+			}
+		}
+
+		/*CREER FONCTION POUR QUITTER QUI DECHARGE LES SPRITES*/
+	}
+	return;
+}
+
+
+void partie_un_joueurs(int taille_tableau){
 	int cross, test, tab[MAX][MAX], i, z, taille_case, clic_x, clic_y, test_deplacement, game_over_joueur1 = 1, game_over_joueur2 = 1;
 	int tour_de_jeu = 1, phase_de_jeu = PLACEMENT_JOUEUR_UN, joueur1_x = JOUEUR_PAS_ENCORE_PLACE, joueur1_y = JOUEUR_PAS_ENCORE_PLACE, joueur2_x = JOUEUR_PAS_ENCORE_PLACE, joueur2_y = JOUEUR_PAS_ENCORE_PLACE;
 	int pause = 0, sprite_fond_achiv, sprite_achiv_1, achiv_unlocked[3] = {0};
@@ -471,11 +659,16 @@ void partie_un_joueur(int taille_tableau){
 	return;
 }
 
+
+
 int main(void){
 	int taille_tableau = MAX, selection = 0;
-	menu(&taille_tableau, &selection);
 
+	menu(&taille_tableau, &selection);
 	if (selection == 2)
-		partie_un_joueur(taille_tableau);
+		partie_un_joueurs(taille_tableau);
+	if (selection == 1)
+		partie_deux_joueurs(taille_tableau);
+
 
 }
