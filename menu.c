@@ -69,7 +69,7 @@ void menu(int* taille_tableau,int* selection){
   *selection = 0;
   int souris_x,souris_y, selection_image;
 
-  ChargerImageFond("fond_achiv.png");
+  ChargerImageFond("images/fond_achiv.png");
   ChargerImage("Titre.png",200,10,10,35,190,120);
   selection_image = ChargerSprite("images/selection.png");
   AfficherSprite(selection_image, 200,600);
