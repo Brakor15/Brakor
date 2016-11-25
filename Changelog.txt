@@ -17,4 +17,4 @@
 25 nov	23:39 : Correction de tous les bugs de succès, maintenant entierement fonctionnel. Reste un problème d'affichage 			lors de l'obtention d'un succès. Ajout des murs qui changent d'apparence en fonction de leur position. Ajout 			du chargement des ressources graphiques en fonction de la taille du tableau. Ajout de l'attente du clic avant 			de quitter la partie quand Game Over. Il reste un probleme de sintillement du bord du plateau lorsqu'un mur y 			est collé.
 		(Probablement pas corrigeable avec la biblio graphique, à voir).
 
-kappa
+26 nov 	      : Création du mode 1 joueur, création de l'IA (à optimisée car peut être bloquée dans de rares siutations).
