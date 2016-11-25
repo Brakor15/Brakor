@@ -175,7 +175,7 @@ void g_gagner_achiv(int numero_achiv, int achivement_unlocked[]){
 	if (numero_achiv == 2){
 		for(i=0; i<150; i++){
 			AfficherSprite(succes1, LARGEUR_FENETRE-i*2, 100);
-			usleep(8000);
+			usleep(6000);
 		}
 	}
 	LibererSprite(succes1);
@@ -206,18 +206,19 @@ int verification_achivement_deja_unlocked(int achivement_unlocked, int tableau_a
 /*Affichage graphique des elements après lecture dans le tableau : affiche un carre vide pour chaque 0, une croix pour chaque 1, un 4 pour le joueur 1, un 8 pour le joueur 2*/
 /*Pour le moment, n'affiche que les carrés*/
 void g_affichage_plateau(int const tab[][9], int taille_case, int taille_tableau, int phase_de_jeu, int sprite_mur, int sp_bord_gauche, int sp_bord_droit,int sp_bord_haut,int sp_bord_bas){
-
+	ChoisirEcran(1); /* Pour eviter les problemes d'affichage */
+	ChargerImage("images/fond.png",0,0,0,0,800,800);
 	int pos_case_x, pos_case_y, pos_case_x2, pos_case_y2, i, z, joueur1 = ChargerSprite("images/joueur1_perso.png"), joueur2 = ChargerSprite("images/joueur2_perso.png");
 	for (i = 0; i<taille_tableau; i++){
-		if (i != 0){ /*Normalement inutile, permet de supprimer les lignes qui longent le bord de la fenetre. Cependant cela crée des syntillements avec la bibliotheque graphique alors on les retire. */
+		if (i != 0){ 
 			ChoisirCouleurDessin(CouleurParComposante(255,255,255));
-			DessinerSegment(i*taille_case, 20, i*taille_case, LARGEUR_FENETRE-30);
+			DessinerSegment(i*taille_case, 0, i*taille_case, LARGEUR_FENETRE);
 		}
 
 		for(z = 0; z<taille_tableau; z++){
-			if (z != 0){/*Normalement inutile, permet de supprimer les lignes qui longent le bord de la fenetre. Cependant cela crée des syntillements avec la bibliotheque graphique alors on les retire. */
+			if (z != 0){
 			ChoisirCouleurDessin(CouleurParComposante(255,255,255));
-			DessinerSegment(20, z*taille_case, LONGUEUR_FENETRE-20, z*taille_case);
+			DessinerSegment(0, z*taille_case, LONGUEUR_FENETRE, z*taille_case);
 			}
 		}
 	}
@@ -245,10 +246,7 @@ void g_affichage_plateau(int const tab[][9], int taille_case, int taille_tableau
 				LibererSprite(joueur2);
 			}
 
-
 		}
-
-
 
 	}
 
@@ -270,7 +268,8 @@ void g_affichage_plateau(int const tab[][9], int taille_case, int taille_tableau
 		ChargerImage("images/textes/J1DEP.png", LARGEUR_FENETRE/2-225, LONGUEUR_FENETRE-30, 0, 0, 500, 200);
 	else if(phase_de_jeu == PLACEMENT_JOUEUR_DEUX)
 		ChargerImage("images/textes/J1DEP.png", LARGEUR_FENETRE/2-225, LONGUEUR_FENETRE-30, 0, 0, 500, 200);
-
+	CopierZone(1, 0, 0, 0, 800, 800, 0, 0);
+	ChoisirEcran(0);
 }
 
 
@@ -285,7 +284,6 @@ void debloquer_succes(int achivement_unlocked, int tableau_achivement[]){
 void g_affichage_achivment(int sprite_fond, int achiv_unlocked[]){
 
 	FILE* achiv_file;
-	int succes1 = ChargerSprite("images/achivements/1.png");
 	ChargerImageFond("images/fond_achiv3.png");
 	achiv_file = fopen("achivments.txt", "r");
 	if (achiv_file != NULL){
@@ -295,10 +293,13 @@ void g_affichage_achivment(int sprite_fond, int achiv_unlocked[]){
 	else
 		printf("Problème lors de l'ouverture du fichier de succès");
 	if (achiv_unlocked[0] == 1){
-		AfficherSprite(succes1, LARGEUR_FENETRE/4, LONGUEUR_FENETRE/4);
+		ChargerImage("images/achivements/1.png", LARGEUR_FENETRE/4, LONGUEUR_FENETRE/4, 0, 0, 300, 100);
 		printf("Affichage succès");
 	}
-	LibererSprite(succes1);
+	if (achiv_unlocked[1] == 1){
+		ChargerImage("images/achivements/1.png", LARGEUR_FENETRE/4, LONGUEUR_FENETRE/2, 0, 0, 300, 100);
+		printf("Affichage succès");
+	}
 
 	fclose(achiv_file);
 }
@@ -344,7 +345,6 @@ int main(void){
 	sprite_fond_achiv = ChargerSprite("fond_achiv3.png");
 	sprite_achiv_1 = ChargerSprite("images/achiv_1.png");
 	print_board(tab, taille_tableau); /*Affichage en console pour debeugage*/
-	ChargerImage("images/fond.png",0,0,0,0,800,800);
 	g_affichage_plateau(tab, taille_case, taille_tableau, phase_de_jeu, sp_mur_normal, sp_bord_gauche, sp_bord_droit, sp_bord_haut, sp_bord_bas); /*On affiche le tableau en fonction de ce qu'il y a dans le tableau */
 	printf("%d", taille_case);
 	while(1){
@@ -380,11 +380,9 @@ int main(void){
 					if (test == 0){ /* Si la case cliquee libre et phase dep joueur, on deplace le joueur en fonction du tour*/
 						test_deplacement = deplacement_verification(tab, &joueur1_x, &joueur1_y, clic_x, clic_y);
 						if (test_deplacement == DEPLACEMENT_POSSIBLE){
-							ChargerImage("images/fond.png", joueur1_x*taille_case+1, joueur1_y*taille_case+1, joueur1_x*taille_case+1, joueur1_y*taille_case+1, taille_case-10, taille_case-10);
 							deplacement_joueur(tab, &joueur1_x, &joueur1_y, clic_x, clic_y);
 							phase_de_jeu = PHASE_COCHER_CASE1;
 							test_deplacement = FIN_DEPLACEMENT;
-							/*ChargerImage("images/fond_achiv.png", 0, 0, 0, 0, 800, 800);*/
 						}
 					}
 					break;
@@ -393,7 +391,6 @@ int main(void){
 					if (test == 0){
 						test_deplacement = deplacement_verification(tab, &joueur2_x, &joueur2_y, clic_x, clic_y);
 						if (test_deplacement == DEPLACEMENT_POSSIBLE){
-							ChargerImage("images/fond.png", joueur2_x*taille_case+1, joueur2_y*taille_case+1, joueur2_x*taille_case+1, joueur2_y*taille_case+1, taille_case-10, taille_case-10);
 							deplacement_joueur(tab, &joueur2_x, &joueur2_y, clic_x, clic_y);
 							phase_de_jeu = PHASE_COCHER_CASE2;
 							test_deplacement = FIN_DEPLACEMENT;
