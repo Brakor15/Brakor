@@ -663,12 +663,17 @@ void partie_un_joueurs(int taille_tableau){
 
 int main(void){
 	int taille_tableau = MAX, selection = 0;
-
-	menu(&taille_tableau, &selection);
-	if (selection == 2)
-		partie_un_joueurs(taille_tableau);
-	if (selection == 1)
-		partie_deux_joueurs(taille_tableau);
-
-
+	InitialiserGraphique();
+  CreerFenetre(150,150,800,800);
+	while(1){
+		menu(&taille_tableau, &selection);
+		if (selection == 2)
+			partie_un_joueurs(taille_tableau);
+		if (selection == 1)
+			partie_deux_joueurs(taille_tableau);
+		if (selection == 3){
+			FermerGraphique();
+			return EXIT_SUCCESS;
+		}
+	}
 }

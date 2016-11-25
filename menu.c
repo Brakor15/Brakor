@@ -68,9 +68,8 @@ void menu(int* taille_tableau,int* selection){
   *taille_tableau = 3;
   *selection = 0;
   int souris_x,souris_y, selection_image;
-  InitialiserGraphique();
-  CreerFenetre(150,150,800,800);
-  ChargerImageFond("fond.png");
+
+  ChargerImageFond("fond_achiv.png");
   ChargerImage("Titre.png",200,10,10,35,190,120);
   selection_image = ChargerSprite("images/selection.png");
   AfficherSprite(selection_image, 200,600);
