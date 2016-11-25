@@ -210,7 +210,7 @@ void g_affichage_plateau(int const tab[][9], int taille_case, int taille_tableau
 	ChargerImage("images/fond.png",0,0,0,0,800,800);
 	int pos_case_x, pos_case_y, pos_case_x2, pos_case_y2, i, z, joueur1 = ChargerSprite("images/joueur1_perso.png"), joueur2 = ChargerSprite("images/joueur2_perso.png");
 	for (i = 0; i<taille_tableau; i++){
-		if (i != 0){ 
+		if (i != 0){
 			ChoisirCouleurDessin(CouleurParComposante(255,255,255));
 			DessinerSegment(i*taille_case, 0, i*taille_case, LARGEUR_FENETRE);
 		}
@@ -332,15 +332,14 @@ int deplacement_verification(int tab[][9], int* pos_x, int* pos_y, int pos_xx, i
 	return 1;
 }
 
-int main(void){
-	int taille_tableau = MAX, selection = 0, cross, test, tab[MAX][MAX], i, z, taille_case, clic_x, clic_y, test_deplacement, game_over_joueur1 = 1, game_over_joueur2 = 1;
+void partie_un_joueur(int taille_tableau){
+	int cross, test, tab[MAX][MAX], i, z, taille_case, clic_x, clic_y, test_deplacement, game_over_joueur1 = 1, game_over_joueur2 = 1;
 	int tour_de_jeu = 1, phase_de_jeu = PLACEMENT_JOUEUR_UN, joueur1_x = JOUEUR_PAS_ENCORE_PLACE, joueur1_y = JOUEUR_PAS_ENCORE_PLACE, joueur2_x = JOUEUR_PAS_ENCORE_PLACE, joueur2_y = JOUEUR_PAS_ENCORE_PLACE;
 	int pause = 0, sprite_fond_achiv, sprite_achiv_1, achiv_unlocked[3] = {0};
 
 
 	int sp_mur_normal, sp_bord_gauche, sp_bord_droit, sp_bord_haut, sp_bord_bas; /*Sprites */
 
-	menu(&taille_tableau, &selection);
 	initialisation_jeu(tab, &taille_case, taille_tableau, &sp_mur_normal, &sp_bord_gauche, &sp_bord_droit, &sp_bord_haut, &sp_bord_bas); /*On initialise le tableau en fonction de la taille_tableau choisit par l'utilisateur lors du menu */
 	sprite_fond_achiv = ChargerSprite("fond_achiv3.png");
 	sprite_achiv_1 = ChargerSprite("images/achiv_1.png");
@@ -353,8 +352,8 @@ int main(void){
 			SourisPosition();
 			case_cliquee(taille_case, _X, _Y, &clic_x, &clic_y); /*On stocke la valeurs des cases cliquees en X et en Y dans les variables clic_x et clic_y*/
 			test = verification_case(tab, clic_x, clic_y); /*On verifie si la case n'est pas deja à "1" */
-			
-			
+
+
 			switch(phase_de_jeu){
 
 				case PLACEMENT_JOUEUR_UN: /* Si elle était vide, on la remplis par une croix, un "1"*/
@@ -413,8 +412,8 @@ int main(void){
 					break;
 					break;
 				}
-						
-			
+
+
 			g_affichage_plateau(tab, taille_case, taille_tableau, phase_de_jeu,
 					 sp_mur_normal, sp_bord_gauche, sp_bord_droit, sp_bord_haut, sp_bord_bas); /*On affiche le tableau en fonction de ce qu'il y a dans le tableau */
 			printf("Tour du joueur %d, Phase de jeu = %d \n", tour_de_jeu, phase_de_jeu);
@@ -435,21 +434,21 @@ int main(void){
 			if(game_over_joueur1 == 0 && phase_de_jeu == PHASE_DEP_JOUEUR1){
 				printf("%d\n", phase_de_jeu);
 				printf("GAME OVER JOUEUR 1\n");
-				return 1;
+				return;
 			}
-			
+
 			else if(game_over_joueur2 == 0 && phase_de_jeu == PHASE_DEP_JOUEUR2){
 				debloquer_succes(2, achiv_unlocked);
 				printf("GAME OVER JOUEUR 2\n");
-				return 1;
+				return;
 			}
-			
+
 		}
 
 		if (ToucheEnAttente()){
 			if(Touche() == XK_Escape){ /*Si on appuis sur Echap pendant le prog, ca quitte*/
 				FermerGraphique();
-				return EXIT_SUCCESS;
+				return;
       }
 		else{
 			printf("Achivement_ouvert\n");
@@ -469,5 +468,14 @@ int main(void){
 
 		/*CREER FONCTION POUR QUITTER QUI DECHARGE LES SPRITES*/
 	}
-	return EXIT_SUCCESS;
+	return;
+}
+
+int main(void){
+	int taille_tableau = MAX, selection = 0;
+	menu(&taille_tableau, &selection);
+
+	if (selection == 2)
+		partie_un_joueur(taille_tableau);
+
 }

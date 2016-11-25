@@ -64,13 +64,13 @@ void reset_achivements(){
 
 /*Affiche un menu de sélection du nombre de joueurs et gère les choix effectués*/
 
-int menu(int* taille_tableau,int* selection){
+void menu(int* taille_tableau,int* selection){
   *taille_tableau = 3;
   *selection = 0;
   int souris_x,souris_y, selection_image;
   InitialiserGraphique();
   CreerFenetre(150,150,800,800);
-  ChargerImageFond("images/fond.png");
+  ChargerImageFond("fond.png");
   ChargerImage("Titre.png",200,10,10,35,190,120);
   selection_image = ChargerSprite("images/selection.png");
   AfficherSprite(selection_image, 200,600);
@@ -128,9 +128,13 @@ int menu(int* taille_tableau,int* selection){
           }
         }
       if (*selection == 1)
-        return 0;
-      if (*selection == 3)
+        return;
+      if (*selection == 2)
+        return;
+      if (*selection == 3){
         FermerGraphique();
+        exit(1);
+      }
       if (*selection == 4)
         reset_achivements();
 
