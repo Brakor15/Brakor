@@ -36,3 +36,5 @@
 		
 		A venir : réapparition des succès, du carré noir qui montre la phase de jeu actuelle en bas de l'écrran, 			amélioration des conditions de game_over, amélioration de l'IA sur son
 		déplacement. Amélioration potentielle sur le choix des cases qu'elle coche, je verrai selon le temps.
+		
+		BTW : il faut virer tous les time.h, sauf pour le random. Y'en a partout.
