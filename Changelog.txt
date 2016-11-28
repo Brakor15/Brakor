@@ -24,15 +24,14 @@
 	      : Séparation des fonctions dans les fichiers : affichage.c deroulement.c achievements.c et retouche du Makefile (cf archive projet.tar.gz)
 
 
-28 nov	      : Update majeur : Suppression de beaucoup de variables et constantes inutiles, plus qu'un seul fichier de jeu, qui 
+28 nov	 23:00: Update majeur : Suppression de beaucoup de variables et constantes inutiles, plus qu'un seul fichier de jeu, qui 
 		gère le jeu seule selon le nombre d'IA et de joueurs humains en jeu. Beug à partir de plus de 4 joueurs : après 
 		le placement des pions, le joueur humain doit cliquer pour continuer la partie (juste une fois). Après la partie 
 		se déroule normalement. 
 		Les succès ne fonctionnent plus car leur activation en jeu ont été désactivée. A remettre.
 		Si il y a deux IA qui jouent et qu'on en tue une, le jeu reste bloqué car le game over n'est pas encore codé pour
-		que la partie se termine lorsque deux IA sont mortes. Petite boucle à rajouter pour cela. 
-		Carré noir en bas de l'écran toujours présent mais désactivé, je le remettrais bientôt corrigé pour une
-		utilisation générale.
+		que la partie se termine lorsque deux IA sont mortes. Petite boucle à rajouter pour cela. Carré noir en bas de
+		l'écran toujours présent mais désactivé, je le remettrais bientôt corrigé pour une utilisation générale.
 		
 		A venir : réapparition des succès, du carré noir qui montre la phase de jeu actuelle en bas de l'écran,
 		amélioration des conditions de game_over, amélioration de l'IA sur son 
