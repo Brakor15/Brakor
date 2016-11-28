@@ -28,7 +28,7 @@
 		gère le jeu seule selon le nombre d'IA et de joueurs humains en jeu. Beug à partir de plus de 4 joueurs : après 
 		le placement des pions, le joueur humain doit cliquer pour continuer la partie (juste une fois). Après la partie 
 		se déroule normalement. 
-		Les succès ne fonctionnent plus. A changer.
+		Les succès ne fonctionnent plus car leur activation en jeu ont été désactivée. A remettre.
 		Si il y a deux IA qui jouent et qu'on en tue une, le jeu reste bloqué car le game over n'est pas encore codé pour
 		que la partie se termine lorsque deux IA sont mortes. Petite boucle à rajouter pour cela.
 		
