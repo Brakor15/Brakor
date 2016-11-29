@@ -40,3 +40,16 @@
 		déplacement. Amélioration potentielle sur le choix des cases qu'elle coche, je verrai selon le temps.
 		
 		BTW : il faut virer tous les time.h, sauf pour le random. Y'en a partout.
+
+29 nov 	 24:00: Succès fonctionnels. Ajout d'options dans le menu. Suppression de l'affichage des succès en jeu. 
+		Nettoyage des fichiers sources, amélioration de la boucle de jeu pour retirer quelques bugs potentiels et le 
+		rendre plus lisible. Ajout des carrés noirs qui préviennent de la phase de jeu actuelle. Reste à 
+		creer les images qui disent aux joueurs de placer leurs pions en début de partie.
+		Mode histoire arrive bientôt.
+		Game_over à coder pour + d'une IA. 
+		Problème de game over reglés pour ce qui est des parties normales.
+		Ajout du succès 1 : "Suicidez vous".
+		Ajout du succès 2 après l'ajout du mode histoire : "Terminez l'histoire".
+		L'histoire comptera 3 chapitres maximum, et la progression sera enregistrée dans un fichier nommé "save.dat".
+		Le bouton réinitialiser succès est à changer en bouton réinitialiser la progression qui remetra à 0 les saves
+		et les succès.
