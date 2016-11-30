@@ -53,3 +53,5 @@
 		L'histoire comptera 3 chapitres maximum, et la progression sera enregistrée dans un fichier nommé "save.dat".
 		Le bouton réinitialiser succès est à changer en bouton réinitialiser la progression qui remetra à 0 les saves
 		et les succès.
+
+30 nov 	 23:35: Upload massif in coming : ajout du mode histoire demain.
